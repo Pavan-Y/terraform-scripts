@@ -1,0 +1,22 @@
+3 types
+
+1. Cofiguration management          ex: Ansible, Puppet, Salt Stack
+    -> To install, mng software on existing infrastructure
+    -> Maintains standard structure and Version Control.
+    -> Idempotent (same behavior how many times u run)
+
+2. Server templatig                 ex: docker, Packer, Vagrant
+    -> Preinstalled softwares and dependencies(VM/docker images)
+    -> immutable infrastructure
+
+3. Provisioning tools               ex: terraform, cloudFormation
+    -> By simple declarative code, Provisioning of infrastructure.
+    -> CF provides UI, templates for easy provision of resources in AWS.
+    -> TF supports all major CSP, and many more...
+
+We can use config mng tools for Provisioning
+        can write ansible playbook to launch ec2 instances(using ec2 module)
+
+=> this should be avoided as there is no state management[it's based on procedural approach]
+[it'll create new instance in every run, it won't check if it already exists](possible to check if already exists by adding another tag)[exact_count: 2]
+have to write some more lines for deleting them (with tf it's easy -> terraform destroy )

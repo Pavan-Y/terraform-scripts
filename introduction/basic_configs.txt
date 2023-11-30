@@ -1,0 +1,52 @@
+terraform uses Cofiguration files(*.tf) written in HCL[hashicorp config language]
+
+[local.tf]
+#block name #resource type  $resource name(can be anything, to identify)
+resource "local_file" "pet" {
+    filename = "/root/pets.txt"
+    content = "We lov pets!"
+}
+
+[instance.tf]
+resource "aws_instance" "web" {
+    ami = "ami-oisos"
+    instance_type = "t2.micro"
+}
+
+[s3.tf]
+resource "aws_s3_bucket" "data" {
+    bucket = "webserver-bucket-1111"
+    acl = "private"
+}
+
+
+-> first we'll make the config file(.tf)
+-> then terraform init #checks all config files in current dir(will download req plugis used in those scripts)
+-> terraform plan   #what it will be doing  #helpful for review
+-> terraform apply  #plan will be shown, type yes for executing it.
+
+
+-> terraform apply -auto-approve  #but careful....
+-> terraform show #inspects state file and displays resource details that were impacted.
+
+have to refer doc for the arguments supported for a resource type[required things must fill, others optional..]
+
+
+[local.tf]
+#block name #resource type  $resource name(can be anything, to identify)
+resource "local_file" "pet" {
+    filename = "/root/pets.txt"
+    content = "We lov pets!"
+    file_permission = "0700"
+}
+
+terraform apply => will delete the existing file and creates with this config(just file_permission diff 777 => 700)
+
+terraform destroy => will destroy
+
+(files naming conv in terraform )
+    main.tf         [holds resource defintion]
+    variables.tf    [variables declaration]
+    outputs.tf      [contains outputs from resources]
+    provider.tf     [contains provider defintion]
+    terraform.tf    [configure terraform behavior]

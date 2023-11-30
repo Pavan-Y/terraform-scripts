@@ -1,0 +1,73 @@
+many terraform providers. list is available @registry.terraform.io
+
+3 types
+    official: major csps. owned and maintained by Hashicorp
+    Partner: owned and maintained by third party(themselves) [tested by Hashicorp] ex: heroku,digitalocean
+    Community: individual contributors
+
+
+when u run terraform init (plugins download into .terraform/plugins in current workingDir)
+#it will print this hashicorp/local
+
+structure:
+    registry.terraform.io/hashicorp/local
+#first one is hostname(defaults to registry.terraform.io)
+
+
+#can use multiple providers with no of resource blocks.
+
+-> terraform version # provides tf and installed provider plugins versions..
+
+
+#Provider Versioning:
+    when u do terraform init, it will download the latest version of provider plugin
+    for ex: local:2.0.0 is latest
+    if u wanna use 1.4.0, add the below block in tf file
+        terraform {
+            required_providers{
+                local = {
+                    source = "hashicorp/local"
+                    version = "1.4.0"
+                }
+                #like above we can do for many plugins
+            }
+        }
+    -> version = "!= 2.0.0" #avoiding specific Version
+    -> version = "> 1.2.0, < 2.0.0, !=1.4.0"  #specific range
+    -> version = "~> 1.2" #1.2 or above(till 1.9 but not 2.x)
+               = "~> 1.2.0"  #1.2.0 or above(but limited to 1.2.9)
+    
+#can use constraints in required_providers like this, provider requirements, modules.
+
+
+
+#Aliases:
+used in certain cases 
+    -> creating resources in different regions
+
+ex:
+[providers.tf]
+provider "aws" {
+    region = "us-east-1"
+}
+
+provider "aws" {
+    region = "ap-south-1"
+    alias = "mera_mumbai"
+}
+
+[main.tf]
+resource "aws_key_pair" "alpha" {
+    key_name = "alpha"
+    public_key = "ssh vnfskjvndsjvndjsfndjfn"
+}
+
+resource "aws_key_pair" "beta" {
+    key_name = "beta"
+    public_key = "ssh vnsjnfjndfnfdf"
+    provider = aws.mera_mumbai        
+}
+
+
+
+#so here when u apply alpha keypair will be created @us-east-1 and beta @ap-s-1.

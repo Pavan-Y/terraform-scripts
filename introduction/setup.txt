@@ -1,0 +1,5 @@
+download from official https://releases.hashicorp.com/terraform/1.6.5/terraform_1.6.5_windows_386.zip
+add the directory to path(environment variable)
+
+#Open CMD
+terraform -version #for confirmation
